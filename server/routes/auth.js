@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("../db");
+const verifyToken = require("../auth");
 
 const router = express.Router();
 const SECRET = "dayflow_secret"; // hackathon-safe
@@ -52,3 +53,12 @@ router.post("/login", (req, res) => {
 });
 
 module.exports = router;
+
+// HR: list users
+router.get('/users', verifyToken, (req, res) => {
+  if (req.user.role !== 'HR') return res.status(403).json({ error: 'Access denied' });
+  db.all('SELECT id, company_name, name, email, phone, role FROM users', [], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+});

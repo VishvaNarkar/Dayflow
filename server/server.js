@@ -22,8 +22,7 @@ db.serialize(() => {
       user_id INTEGER,
       date TEXT,
       check_in TEXT,
-      check_out TEXT,
-      status TEXT DEFAULT 'PENDING'
+      check_out TEXT
     )
   `);
 
@@ -55,6 +54,22 @@ db.serialize(() => {
   ensureColumn('users', 'company_name', 'TEXT');
   ensureColumn('users', 'name', 'TEXT');
   ensureColumn('users', 'phone', 'TEXT');
+
+  // If an older DB has 'status' column on attendance, migrate to remove it
+  db.all(`PRAGMA table_info(attendance)`, (err, rows) => {
+    if (err) return console.error('Migration check failed for attendance:', err.message);
+    const hasStatus = Array.isArray(rows) && rows.some(r => r && r.name === 'status');
+    if (hasStatus) {
+      console.log('Migrating attendance table to remove status column...');
+      db.serialize(() => {
+        db.run(`CREATE TABLE IF NOT EXISTS attendance_new (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, date TEXT, check_in TEXT, check_out TEXT)`);
+        db.run(`INSERT INTO attendance_new (id, user_id, date, check_in, check_out) SELECT id, user_id, date, check_in, check_out FROM attendance`);
+        db.run(`DROP TABLE attendance`);
+        db.run(`ALTER TABLE attendance_new RENAME TO attendance`);
+        console.log('Migration complete: attendance.status removed');
+      });
+    }
+  });
 });
 
 const authRoutes = require("./routes/auth");

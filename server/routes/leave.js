@@ -44,4 +44,18 @@ router.post("/decision/:id", verifyToken, (req, res) => {
   });
 });
 
+// EMPLOYEE: my leaves (history)
+router.get('/my', verifyToken, (req, res) => {
+  db.all(
+    `SELECT leaves.id, leaves.start_date, leaves.end_date, leaves.reason, leaves.status, users.email
+     FROM leaves JOIN users ON leaves.user_id = users.id
+     WHERE leaves.user_id = ? ORDER BY leaves.start_date DESC`,
+    [req.user.id],
+    (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(rows);
+    }
+  );
+});
+
 module.exports = router;

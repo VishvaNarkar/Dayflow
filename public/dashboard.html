@@ -7,14 +7,31 @@
 <body class="container mt-5">
 
 <h3>Employee Dashboard</h3>
+  <div class="mb-3 d-flex gap-2">
+  <button class="btn btn-success" onclick="checkIn()">Check In</button>
+  <button class="btn btn-warning" onclick="checkOut()">Check Out</button>
+  <a class="btn btn-outline-primary" href="leaves.html">Leaves</a>
+  <button class="btn btn-danger" onclick="logout()">Logout</button>
+  </div>
+<p id="msg" class="mt-2"></p>
 
-<button class="btn btn-success mt-3" onclick="checkIn()">Check In</button>
-<button class="btn btn-warning mt-3" onclick="checkOut()">Check Out</button>
-<button class="btn btn-danger mt-3" onclick="logout()">Logout</button>
-
-<p id="msg" class="mt-3"></p>
-
-<p id="status" class="mt-3 fw-bold"></p>
+<div class="card mt-4">
+  <div class="card-body p-2">
+    <div class="d-flex mb-2">
+      <input id="empDate" type="date" class="form-control form-control-sm" style="max-width:200px">
+      <select id="viewMode" class="form-control form-control-sm" style="max-width:200px; margin-left:8px">
+        <option value="day">Day</option>
+        <option value="month">Month</option>
+      </select>
+    </div>
+    <table class="table table-sm table-striped mb-0">
+      <thead>
+        <tr><th>Date</th><th>Check In</th><th>Check Out</th><th>Work Hours</th><th>Extra hours</th></tr>
+      </thead>
+      <tbody id="myAttendanceBody"></tbody>
+    </table>
+  </div>
+</div>
 
 <script src="js/dashboard.js"></script>
 </body>
