@@ -1,0 +1,48 @@
+const express = require("express");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const db = require("../db");
+
+const router = express.Router();
+const SECRET = "dayflow_secret"; // hackathon-safe
+
+// REGISTER
+router.post("/register", (req, res) => {
+  const { email, password, role } = req.body;
+  const hashed = bcrypt.hashSync(password, 8);
+
+  db.run(
+    "INSERT INTO users (email, password, role) VALUES (?, ?, ?)",
+    [email, hashed, role],
+    function (err) {
+      if (err) return res.status(400).json({ error: err.message });
+      res.json({ message: "User registered" });
+    }
+  );
+});
+
+// LOGIN
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
+
+  db.get(
+    "SELECT * FROM users WHERE email = ?",
+    [email],
+    (err, user) => {
+      if (!user) return res.status(401).json({ error: "Invalid login" });
+
+      const valid = bcrypt.compareSync(password, user.password);
+      if (!valid) return res.status(401).json({ error: "Invalid login" });
+
+      const token = jwt.sign(
+        { id: user.id, role: user.role },
+        SECRET,
+        { expiresIn: "6h" }
+      );
+
+      res.json({ token, role: user.role });
+    }
+  );
+});
+
+module.exports = router;
