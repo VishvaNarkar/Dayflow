@@ -1,3 +1,6 @@
+const path = require("path");
+const express = require("express");
+const cors = require("cors");
 const db = require("./db");
 
 db.serialize(() => {
@@ -20,21 +23,39 @@ db.serialize(() => {
       status TEXT DEFAULT 'PENDING'
     )
   `);
-});
 
-const express = require("express");
-const cors = require("cors");
+  db.run(`
+    CREATE TABLE IF NOT EXISTS leaves (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      start_date TEXT,
+      end_date TEXT,
+      reason TEXT,
+      status TEXT DEFAULT 'PENDING'
+    )
+  `);
+});
 
 const authRoutes = require("./routes/auth");
 const attendanceRoutes = require("./routes/attendance");
+const leaveRoutes = require("./routes/leave");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve static client files
+app.use(express.static(path.join(__dirname, "..", "public")));
+
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/attendance", attendanceRoutes);
+app.use("/api/leave", leaveRoutes);
 
-app.listen(3000, () =>
-  console.log("🚀 Server running on http://localhost:3000")
-);
+// Fallback to login page for browser root
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "login.html"));
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
