@@ -99,7 +99,7 @@ function loadLeaves() {
       rows.forEach(l => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${l.email}</td>
+          <td>${l.name || l.email}</td>
           <td>${l.start_date}</td>
           <td>${l.end_date}</td>
           <td>${l.reason}</td>

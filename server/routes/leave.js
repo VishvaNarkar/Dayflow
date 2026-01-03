@@ -22,7 +22,7 @@ router.get("/pending", verifyToken, (req, res) => {
   if (req.user.role !== "HR") return res.status(403).json({ error: "Access denied" });
 
   db.all(
-    `SELECT leaves.id, users.email, leaves.start_date, leaves.end_date, leaves.reason
+    `SELECT leaves.id, users.name, users.email, leaves.start_date, leaves.end_date, leaves.reason
      FROM leaves
      JOIN users ON leaves.user_id = users.id
      WHERE leaves.status = 'PENDING'`,
@@ -47,7 +47,7 @@ router.post("/decision/:id", verifyToken, (req, res) => {
 // EMPLOYEE: my leaves (history)
 router.get('/my', verifyToken, (req, res) => {
   db.all(
-    `SELECT leaves.id, leaves.start_date, leaves.end_date, leaves.reason, leaves.status, users.email
+    `SELECT leaves.id, leaves.start_date, leaves.end_date, leaves.reason, leaves.status, users.name, users.email
      FROM leaves JOIN users ON leaves.user_id = users.id
      WHERE leaves.user_id = ? ORDER BY leaves.start_date DESC`,
     [req.user.id],

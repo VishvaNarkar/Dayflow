@@ -7,32 +7,57 @@
 <body class="container mt-5">
 
 <h3>Employee Dashboard</h3>
-  <div class="mb-3 d-flex gap-2">
-  <button class="btn btn-success" onclick="checkIn()">Check In</button>
-  <button class="btn btn-warning" onclick="checkOut()">Check Out</button>
-  <a class="btn btn-outline-primary" href="leaves.html">Leaves</a>
-  <button class="btn btn-danger" onclick="logout()">Logout</button>
+  <div class="mb-3 d-flex gap-2 align-items-center">
+    <button class="btn btn-success" onclick="checkIn()">Check In</button>
+    <button class="btn btn-warning" onclick="checkOut()">Check Out</button>
+    <a class="btn btn-outline-primary" href="leaves.html">Leaves</a>
+    <button class="btn btn-danger ms-auto" onclick="logout()">Logout</button>
   </div>
-<p id="msg" class="mt-2"></p>
 
-<div class="card mt-4">
-  <div class="card-body p-2">
-    <div class="d-flex mb-2">
-      <input id="empDate" type="date" class="form-control form-control-sm" style="max-width:200px">
-      <select id="viewMode" class="form-control form-control-sm" style="max-width:200px; margin-left:8px">
-        <option value="day">Day</option>
-        <option value="month">Month</option>
-      </select>
+  <p id="msg" class="mt-2"></p>
+
+  <div class="card mt-3 p-3">
+    <div class="d-flex align-items-center mb-3">
+      <div class="me-2">
+        <button id="prevMonth" class="btn btn-outline-secondary btn-sm">&lt;</button>
+      </div>
+      <div>
+        <h5 id="monthLabel" class="mb-0"></h5>
+      </div>
+      <div class="ms-2">
+        <button id="nextMonth" class="btn btn-outline-secondary btn-sm">&gt;</button>
+      </div>
+      <div class="ms-4 d-flex gap-2">
+        <div class="card p-2 text-center">
+          <div class="small text-muted">Count of days present</div>
+          <div id="presentCount" class="h5 mb-0">0</div>
+        </div>
+        <div class="card p-2 text-center">
+          <div class="small text-muted">Leaves count</div>
+          <div id="leavesCount" class="h5 mb-0">0</div>
+        </div>
+        <div class="card p-2 text-center">
+          <div class="small text-muted">Total working days</div>
+          <div id="workingDays" class="h5 mb-0">0</div>
+        </div>
+      </div>
     </div>
-    <table class="table table-sm table-striped mb-0">
-      <thead>
-        <tr><th>Date</th><th>Check In</th><th>Check Out</th><th>Work Hours</th><th>Extra hours</th></tr>
-      </thead>
-      <tbody id="myAttendanceBody"></tbody>
-    </table>
-  </div>
-</div>
 
-<script src="js/dashboard.js"></script>
+    <div>
+      <table class="table table-sm table-striped mb-0">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+            <th>Work Hours</th>
+          </tr>
+        </thead>
+        <tbody id="myAttendanceBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
 </body>
 </html>
