@@ -1,3 +1,7 @@
+if (localStorage.getItem("role") !== "EMPLOYEE") {
+  window.location.href = "login.html";
+}
+
 const token = localStorage.getItem("token");
 if (!token) window.location.href = "login.html";
 
@@ -25,7 +29,7 @@ function checkOut() {
   })
   .then(res => res.json())
   .then(data => {
-    document.getElementById("msg").innerText = data.message;
+    document.getElementById("status").innerText = data.message;
   });
 }
 

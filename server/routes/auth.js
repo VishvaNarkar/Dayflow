@@ -8,12 +8,12 @@ const SECRET = "dayflow_secret"; // hackathon-safe
 
 // REGISTER
 router.post("/register", (req, res) => {
-  const { email, password, role } = req.body;
+  const { companyName, name, email, password, phone, role } = req.body;
   const hashed = bcrypt.hashSync(password, 8);
 
   db.run(
-    "INSERT INTO users (email, password, role) VALUES (?, ?, ?)",
-    [email, hashed, role],
+    "INSERT INTO users (company_name, name, email, phone, password, role) VALUES (?, ?, ?, ?, ?, ?)",
+    [companyName, name, email, phone, hashed, role],
     function (err) {
       if (err) return res.status(400).json({ error: err.message });
       res.json({ message: "User registered" });

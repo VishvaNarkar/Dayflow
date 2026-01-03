@@ -7,7 +7,10 @@ db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      company_name TEXT,
+      name TEXT,
       email TEXT UNIQUE,
+      phone TEXT,
       password TEXT,
       role TEXT
     )
@@ -54,7 +57,7 @@ app.use("/api/leave", leaveRoutes);
 
 // Fallback to login page for browser root
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "login.html"));
+  res.sendFile(path.join(__dirname, "..", "public", "signup.html"));
 });
 
 const PORT = process.env.PORT || 3000;
