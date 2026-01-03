@@ -15,7 +15,13 @@ router.post("/register", (req, res) => {
     "INSERT INTO users (company_name, name, email, phone, password, role) VALUES (?, ?, ?, ?, ?, ?)",
     [companyName, name, email, phone, hashed, role],
     function (err) {
-      if (err) return res.status(400).json({ error: err.message });
+      if (err) {
+        // Handle duplicate email with a friendly message
+        if (err.code === 'SQLITE_CONSTRAINT' || (err.message && err.message.includes('UNIQUE constraint'))) {
+          return res.status(400).json({ error: 'Email already registered' });
+        }
+        return res.status(400).json({ error: err.message });
+      }
       res.json({ message: "User registered" });
     }
   );

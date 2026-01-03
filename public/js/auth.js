@@ -32,7 +32,8 @@ function signup() {
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("confirm-password").value;
   const phone = document.getElementById("phone").value;
-  const role = document.getElementById("role").value;
+  const roleEl = document.getElementById("role");
+  const role = roleEl ? roleEl.value : "EMPLOYEE";
 
   if (password !== confirmPassword) {
     document.getElementById("error").innerText = "Passwords do not match";
@@ -46,11 +47,12 @@ function signup() {
   })
   .then(res => res.json())
   .then(data => {
+    const errEl = document.getElementById("error");
     if (data.message) {
-      document.getElementById("error").innerText = "Signup successful! Please login.";
-      setTimeout(() => window.location.href = "index.html", 2000);
+      if (errEl) errEl.innerText = "Signup successful! Please login.";
+      setTimeout(() => window.location.href = "login.html", 1200);
     } else {
-      document.getElementById("error").innerText = data.error || "Signup failed";
+      if (errEl) errEl.innerText = data.error || "Signup failed";
     }
   });
 }

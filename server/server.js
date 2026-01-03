@@ -37,6 +37,24 @@ db.serialize(() => {
       status TEXT DEFAULT 'PENDING'
     )
   `);
+  
+  // Ensure columns exist for older databases (add missing columns without dropping data)
+  function ensureColumn(table, column, definition) {
+    db.all(`PRAGMA table_info(${table})`, (err, rows) => {
+      if (err) return console.error(`Migration check failed for ${table}:`, err.message);
+      const has = Array.isArray(rows) && rows.some(r => r && r.name === column);
+      if (!has) {
+        db.run(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`, (e) => {
+          if (e) console.error(`Failed to add column ${column} to ${table}:`, e.message);
+          else console.log(`✔ Added column ${column} to ${table}`);
+        });
+      }
+    });
+  }
+
+  ensureColumn('users', 'company_name', 'TEXT');
+  ensureColumn('users', 'name', 'TEXT');
+  ensureColumn('users', 'phone', 'TEXT');
 });
 
 const authRoutes = require("./routes/auth");

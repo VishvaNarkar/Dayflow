@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <form action="#">
+        <form onsubmit="event.preventDefault(); signup();">
             <div class="input-group">
                 <label for="company-name">Company Name :</label>
                 <input type="text" id="company-name" required>
@@ -26,6 +26,13 @@
                 <input type="tel" id="phone" required>
             </div>
             <div class="input-group">
+                <label for="role">Role :</label>
+                <select id="role">
+                    <option value="EMPLOYEE" selected>Employee</option>
+                    <option value="HR">HR</option>
+                </select>
+            </div>
+            <div class="input-group">
                 <label for="password">Password :</label>
                 <input type="password" id="password" required>
             </div>
@@ -33,8 +40,9 @@
                 <label for="confirm-password">Confirm Password :</label>
                 <input type="password" id="confirm-password" required>
             </div>
-            <button type="submit" class="signup-btn" onclick="signup()">Sign Up</button>
+            <button type="submit" class="signup-btn">Sign Up</button>
         </form>
+        <p id="error" class="text-danger mt-2 text-center"></p>
         <div class="signin-link">
             Already have an account? <a href="login.html">Sign In</a>
         </div>
