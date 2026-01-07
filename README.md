@@ -33,7 +33,7 @@ It demonstrates a **secure, role-based HR workflow** with JWT authentication and
 
 ## 📂 Project Folder Structure
 
-```
+````
 
 DAYFLOW/
 │
@@ -79,17 +79,19 @@ DAYFLOW/
 ## ⚙️ Installation & Running the Project
 
 ### 1. Clone the repo:
-    ```bash
-    git clone https://github.com/VishvaNarkar/Mini-IDRS.git
-    cd Mini-IDRS
-    ```
 
-### 2️. Install dependencies
+```bash
+git clone https://github.com/VishvaNarkar/Dayflow.git
+cd Dayflow
+```
+
+### 2️. Install dependencies:
+
 ```bash
 npm install
-````
+```
 
-### 3. Start the server
+### 3. Start the server:
 
 ```bash
 npm start
